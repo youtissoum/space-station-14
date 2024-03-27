@@ -277,6 +277,47 @@
       node: port
 
 - type: entity
+  parent: GasPort
+  id: GasPumpPort
+  name: connector pump
+  description: A special type of connector port with a built-in pump and a smaller internal storage.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/gascanisterpumpport.rsi
+    layers:
+      - sprite: Structures/Piping/Atmospherics/pipe.rsi
+        state: pipeHalf
+        map: [ "enum.PipeVisualLayers.Pipe" ]
+      - state: gasCanisterPumpPort
+        map: [ "enum.SubfloorLayers.FirstLayer" ]
+  - type: GenericVisualizer
+    visuals:
+      enum.PumpVisuals.Enabled:
+        enabled:
+          True: { state: gasCanisterPumpPortOn }
+          False: { state: gasCanisterPumpPort }
+  - type: NodeContainer
+    nodes:
+      inlet:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: South
+      canister:
+        !type:PortPipeNode
+        nodeGroupID: Pipe
+        rotationsEnabled: false
+        volume: 15
+  - type: GasPressurePump
+    enabled: false
+    outlet: canister
+  - type: UserInterface
+    interfaces:
+      - key: enum.GasPressurePumpUiKey.Key
+        type: GasPressurePumpBoundUserInterface
+
+- type: entity
   parent: GasVentPump
   id: GasDualPortVentPump
   name: dual-port air vent
