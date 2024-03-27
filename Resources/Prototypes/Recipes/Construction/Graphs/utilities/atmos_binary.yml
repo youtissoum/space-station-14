@@ -39,6 +39,12 @@
       - material: Steel
         amount: 2
         doAfter: 1
+    
+    - to: pumpport
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
 
     - to: dualportventpump
       steps:
@@ -134,6 +140,22 @@
 
   - node: port
     entity: GasPort
+    edges:
+    - to: start
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity
+      steps:
+      - tool: Welding
+        doAfter: 1
+  
+  - node: pumpport
+    entity: GasPumpPort
     edges:
     - to: start
       conditions:

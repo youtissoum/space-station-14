@@ -668,6 +668,27 @@
     - !type:NoUnstackableInTile
 
 - type: construction
+  id: GasPumpPort
+  name: connector pump
+  description: A special type of connector port designed to reduce waste. It has a built-in pump and a smaller internal storage.
+  graph: GasBinary
+  startNode: start
+  targetNode: pumpport
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  icon:
+    sprite: Structures/Piping/Atmospherics/gascanisterpumpport.rsi
+    state: gasCanisterPumpPort
+  layers:
+  - sprite: Structures/Piping/Atmospherics/pipe.rsi
+    state: pipeHalf
+  - sprite: Structures/Piping/Atmospherics/gascanisterpumpport.rsi
+    state: gasCanisterPumpPort
+    conditions:
+      - !type.NoUnstackableInTile
+
+- type: construction
   id: GasDualPortVentPump
   name: dual-port air vent
   description: Has a valve and a pump attached to it. There are two ports, one is an input for releasing air, the other is an output when siphoning.
