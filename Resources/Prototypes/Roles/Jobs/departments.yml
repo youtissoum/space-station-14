@@ -22,6 +22,8 @@
   - Chaplain
   - Chef
   - Clown
+  - ERTChaplain
+  - ERTJanitor
   - HeadOfPersonnel
   - Janitor
   - Lawyer
@@ -44,6 +46,12 @@
   - CentralCommandOfficial
   - ChiefEngineer
   - ChiefMedicalOfficer
+  - ERTChaplain
+  - ERTEngineer
+  - ERTJanitor
+  - ERTLeader
+  - ERTMedical
+  - ERTSecurity
   - HeadOfPersonnel
   - HeadOfSecurity
   - ResearchDirector
@@ -59,6 +67,7 @@
   roles:
   - AtmosphericTechnician
   - ChiefEngineer
+  - ERTEngineer
   - StationEngineer
   - TechnicalAssistant
 
@@ -70,6 +79,7 @@
   roles:
   - Chemist
   - ChiefMedicalOfficer
+  - ERTMedical
   - MedicalDoctor
   - MedicalIntern
   - Psychologist
@@ -82,6 +92,9 @@
   color: "#DE3A3A"
   weight: 20
   roles:
+  - CentralCommandOfficial # added because of the N1984
+  - ERTLeader
+  - ERTSecurity
   - HeadOfSecurity
   - SecurityCadet
   - SecurityOfficer
