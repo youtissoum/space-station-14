@@ -11,6 +11,6 @@
 - type: startingGear
   id: PermaPrisonerGear
   equipment:
-    # id: PrisonerPDA TODO: get them a pda (would need someone to sprite for me because I am horrible at spriting)
+    id: PrisonerPDA
     shoes: ClothingShoesColorBlack
     ears: ClothingHeadsetGrey
