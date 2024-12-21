@@ -6,7 +6,6 @@
   startingGear: PermaPrisonerGear
   icon: "JobIconPrisoner"
   supervisors: job-supervisors-security
-  canBeAntag: false # to prevent any issues with prisoners getting a thief toolbox in perma
 
 - type: startingGear
   id: PermaPrisonerGear
