@@ -3,5 +3,7 @@
   id: JobPermaPrisoner
   groups:
   - PermaPrisonerJumpsuit
+  - GroupTankHarness
   - Survival
+  - Trinkets
   - GroupSpeciesBreathTool
