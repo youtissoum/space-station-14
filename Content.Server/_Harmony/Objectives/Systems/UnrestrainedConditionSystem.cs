@@ -22,7 +22,7 @@ public sealed class UnrestrainedConditionSystem : EntitySystem
         args.Progress = GetProgress((args.MindId, args.Mind));
     }
 
-    private float GetProgress(Entity<MindComponent> mind)
+    public float GetProgress(Entity<MindComponent> mind)
     {
         if (mind.Comp.OwnedEntity is not {} entity || _mindSystem.IsCharacterDeadIc(mind))
             return 0f;
