@@ -106,6 +106,9 @@
   parent: BaseGameRule
   id: PermaPrisoner
   components:
+  - type: AntagObjectives
+    objectives:
+    - EscapePermaObjective
   - type: AntagSelection
     agentName: perma-prisoner-round-end-agent-name
     definitions:
