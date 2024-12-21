@@ -106,6 +106,7 @@
   parent: BaseGameRule
   id: PermaPrisoner
   components:
+  - type: PermaPrisonerRule
   - type: AntagObjectives
     objectives:
     - EscapePermaObjective

@@ -1,7 +1,7 @@
 - type: job
   id: PermaPrisoner
-  name: job-name-perma-prisoner
-  description: job-description-perma-prisoner
+  name: job-name-prisoner
+  description: job-description-prisoner
   playTimeTracker: JobPermaPrisoner
   startingGear: PermaPrisonerGear
   icon: "JobIconPrisoner"
