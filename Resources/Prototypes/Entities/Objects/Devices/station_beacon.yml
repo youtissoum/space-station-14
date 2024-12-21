@@ -209,6 +209,9 @@
   components:
   - type: NavMapBeacon
     defaultText: station-beacon-perma-brig
+  - type: SpawnPoint
+    spawn_type: Job
+    job_id: PermaPrisoner
 
 - type: entity
   parent: DefaultStationBeaconSecurity
