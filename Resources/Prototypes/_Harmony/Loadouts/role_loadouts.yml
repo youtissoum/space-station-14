@@ -1,0 +1,7 @@
+# Security
+- type: roleLoadout
+  id: JobPermaPrisoner
+  groups:
+  - PermaPrisonerJumpsuit
+  - Survival
+  - GroupSpeciesBreathTool

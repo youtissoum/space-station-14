@@ -1,0 +1,16 @@
+- type: job
+  id: PermaPrisoner
+  name: job-name-perma-prisoner
+  description: job-description-perma-prisoner
+  playTimeTracker: JobPermaPrisoner
+  startingGear: PermaPrisonerGear
+  icon: "JobIconPrisoner"
+  supervisors: job-supervisors-security
+  canBeAntag: false # to prevent any issues with prisoners getting a thief toolbox in perma
+
+- type: startingGear
+  id: PermaPrisonerGear
+  equipment:
+    # id: PrisonerPDA TODO: get them a pda (would need someone to sprite for me because I am horrible at spriting)
+    shoes: ClothingShoesColorBlack
+    ears: ClothingHeadsetGrey
