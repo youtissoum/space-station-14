@@ -5,7 +5,7 @@
   playTimeTracker: JobPermaPrisoner
   startingGear: PermaPrisonerGear
   icon: "JobIconPrisoner"
-  supervisors: job-supervisors-security
+  supervisors: job-supervisors-noone
   canBeAntag: false
 
 - type: startingGear

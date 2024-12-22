@@ -7,3 +7,5 @@
     antagPrototype: PermaPrisoner
     exclusiveAntag: true
   - type: PermaPrisonerRole
+  - type: RoleBriefing
+    briefing: permaprisoner-role-briefing
