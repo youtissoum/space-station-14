@@ -1,1 +1,1 @@
-job-description-prisoner = Wait for the perfect opportunity to break out of your cell and run away from security.
+job-description-prisoner = Mess around all while being in a little cell.

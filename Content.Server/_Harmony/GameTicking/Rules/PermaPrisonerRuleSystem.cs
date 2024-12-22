@@ -11,28 +11,6 @@ public sealed class PermaPrisonerRuleSystem : GameRuleSystem<PermaPrisonerRuleCo
 {
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
 
-    private const string BriefingLocId = "permaprisoner-role-greeting";
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<PermaPrisonerRuleComponent, AfterAntagEntitySelectedEvent>(AfterAntagSelected);
-
-        SubscribeLocalEvent<PermaPrisonerRoleComponent, GetBriefingEvent>(OnGetBriefing);
-    }
-
-    private void AfterAntagSelected(Entity<PermaPrisonerRuleComponent> mindId, ref AfterAntagEntitySelectedEvent args)
-    {
-        var ent = args.EntityUid;
-        _antag.SendBriefing(ent, Loc.GetString(BriefingLocId), null, null);
-    }
-
-    private void OnGetBriefing(Entity<PermaPrisonerRoleComponent> role, ref GetBriefingEvent args)
-    {
-        args.Append(Loc.GetString(BriefingLocId));
-    }
-
     public List<Entity<MindComponent>> GetAllPrisonerMinds()
     {
         List<Entity<MindComponent>> allPrisoners = [];
