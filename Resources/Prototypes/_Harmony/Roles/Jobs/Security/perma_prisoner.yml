@@ -6,6 +6,7 @@
   startingGear: PermaPrisonerGear
   icon: "JobIconPrisoner"
   supervisors: job-supervisors-security
+  canBeAntag: false
 
 - type: startingGear
   id: PermaPrisonerGear

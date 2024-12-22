@@ -448,7 +448,7 @@ public sealed partial class AntagSelectionSystem : GameRuleSystem<AntagSelection
         }
 
         // todo: expand this to allow for more fine antag-selection logic for game rules.
-        if (!_jobs.CanBeAntag(session))
+        if (!def.BypassCanBeAntag && !_jobs.CanBeAntag(session))
             return false;
 
         return true;

@@ -194,6 +194,12 @@ public partial struct AntagSelectionDefinition()
     /// </summary>
     [DataField]
     public bool BypassSelectionPreference = false; // HARMONY
+
+    /// <summary>
+    /// Select a player even if the job they have cannot be an antagonist
+    /// </summary>
+    [DataField]
+    public bool BypassCanBeAntag = false; // HARMONY
 }
 
 /// <summary>

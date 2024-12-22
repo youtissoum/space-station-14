@@ -119,5 +119,6 @@
       multiAntagSetting: All
       requiredJob: PermaPrisoner
       bypassSelectionPreference: true
+      bypassCanBeAntag: true
       mindRoles:
       - MindRolePermaPrisoner
