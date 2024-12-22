@@ -107,9 +107,6 @@
   id: PermaPrisoner
   components:
   - type: PermaPrisonerRule
-  - type: AntagObjectives
-    objectives:
-    - EscapePermaObjective
   - type: AntagSelection
     agentName: perma-prisoner-round-end-agent-name
     definitions:
