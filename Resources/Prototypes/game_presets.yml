@@ -6,12 +6,12 @@
   showInVote: false # secret
   description: survival-description
   rules:
-    - PermaPrisoner
     - MeteorSwarmScheduler
     - RampingStationEventScheduler
     - SpaceTrafficControlEventScheduler
     - SpaceTrafficControlFriendlyEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: KesslerSyndrome
@@ -23,11 +23,11 @@
   showInVote: false # secret
   description: kessler-syndrome-description
   rules:
-    - PermaPrisoner
     - KesslerSyndromeScheduler
     - RampingStationEventScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: AllAtOnce
@@ -37,7 +37,6 @@
   description: all-at-once-description
   showInVote: false
   rules:
-    - PermaPrisoner
     - Nukeops
     - Traitor
     - Revolutionary
@@ -46,6 +45,7 @@
     - RampingStationEventScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: AllerAtOnce
@@ -58,7 +58,6 @@
   description: aller-at-once-description
   showInVote: false #Please god dont do this
   rules:
-    - PermaPrisoner
     - Nukeops
     - Traitor
     - Revolutionary
@@ -71,6 +70,7 @@
     - SpaceTrafficControlEventScheduler
     - SpaceTrafficControlFriendlyEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: Extended
@@ -81,11 +81,11 @@
   showInVote: false #2boring2vote
   description: extended-description
   rules:
-  - PermaPrisoner
   - BasicStationEventScheduler
   - MeteorSwarmScheduler
   - SpaceTrafficControlEventScheduler
   - BasicRoundstartVariation
+  - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: Greenshift
@@ -118,11 +118,11 @@
   showInVote: false #Admin Use
   description: secret-description
   rules:
-    - PermaPrisoner
     - BasicStationEventScheduler
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: SecretGreenshift #For Admin Use: Runs Greenshift but shows "Secret" in lobby.
@@ -155,13 +155,13 @@
   description: traitor-description
   showInVote: false
   rules:
-    - PermaPrisoner
     - Traitor
     - SubGamemodesRule
     - BasicStationEventScheduler
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: Deathmatch
@@ -184,13 +184,13 @@
   description: nukeops-description
   showInVote: false
   rules:
-    - PermaPrisoner
     - Nukeops
     - SubGamemodesRule
     - BasicStationEventScheduler
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: Revolutionary
@@ -202,13 +202,13 @@
   description: rev-description
   showInVote: false
   rules:
-    - PermaPrisoner
     - Revolutionary
     - SubGamemodesRule
     - BasicStationEventScheduler
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: Zombie
@@ -222,12 +222,12 @@
   description: zombie-description
   showInVote: false
   rules:
-  - PermaPrisoner
   - Zombie
   - BasicStationEventScheduler
   - MeteorSwarmScheduler
   - SpaceTrafficControlEventScheduler
   - BasicRoundstartVariation
+  - PermaPrisoner # HARMONY
 
 - type: gamePreset
   id: Zombieteors
@@ -239,9 +239,9 @@
   description: zombieteors-description
   showInVote: false
   rules:
-  - PermaPrisoner
   - Zombie
   - BasicStationEventScheduler
   - KesslerSyndromeScheduler
   - SpaceTrafficControlEventScheduler
   - BasicRoundstartVariation
+  - PermaPrisoner # HARMONY
