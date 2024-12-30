@@ -190,13 +190,13 @@ public partial struct AntagSelectionDefinition()
     public ProtoId<JobPrototype>? RequiredJob; // HARMONY
 
     /// <summary>
-    /// If the role should bypass any antagonist preference selection
+    /// If the role should bypass any antagonist preference selection.
     /// </summary>
     [DataField]
     public bool BypassSelectionPreference = false; // HARMONY
 
     /// <summary>
-    /// Select a player even if the job they have cannot be an antagonist
+    /// Select a player even if the job they have cannot be an antagonist.
     /// </summary>
     [DataField]
     public bool BypassCanBeAntag = false; // HARMONY
