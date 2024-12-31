@@ -382,10 +382,6 @@ public sealed partial class AntagSelectionSystem : GameRuleSystem<AntagSelection
             if (!IsSessionValid(ent, session, def) || !IsEntityValid(session.AttachedEntity, def))
                 continue;
 
-            // HARMONY: check if the player has the required job to have this antag role
-            if (def.RequiredJob != null && !_jobs.MindHasJobWithId(session.GetMind(), def.RequiredJob))
-                continue;
-
             // HARMONY: bypass antag selection preference for perma prisoner
             if (def.BypassSelectionPreference)
             {
@@ -450,6 +446,13 @@ public sealed partial class AntagSelectionSystem : GameRuleSystem<AntagSelection
         // todo: expand this to allow for more fine antag-selection logic for game rules.
         if (!def.BypassCanBeAntag && !_jobs.CanBeAntag(session)) // HARMONY: bypass if the job is allowed to be an antag
             return false;
+
+        if (def.RequiredJobs != null) // HARMONY: require the player to have a certain job in order to get the antag role
+        {
+            if (!_jobs.MindTryGetJobId(mind, out var job) ||
+                !def.RequiredJobs.Contains(job!.Value))
+                return false;
+        }
 
         return true;
     }

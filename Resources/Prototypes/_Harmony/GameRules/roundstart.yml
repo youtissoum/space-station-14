@@ -114,7 +114,8 @@
       playerRatio: 100
       allowNonHumans: true
       multiAntagSetting: All
-      requiredJob: PermaPrisoner
+      requiredJobs:
+      - PermaPrisoner
       bypassSelectionPreference: true
       bypassCanBeAntag: true
       mindRoles:
