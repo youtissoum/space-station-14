@@ -1,7 +1,0 @@
-# requires that the target is alive and unrestrained
-- type: entity
-  abstract: true
-  parent: BaseSocialObjective
-  id: BaseKeepUnrestrainedObjective
-  components:
-  - type: KeepUnrestrainedCondition

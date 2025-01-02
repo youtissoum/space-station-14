@@ -6,7 +6,6 @@
   description: secret-description
   showInVote: false #Admin Use
   rules:
-    - PermaPrisoner
     - Nukeops
     - SubGamemodesRule
     - BasicStationEventScheduler

@@ -42,7 +42,6 @@
   weights:
     RandomTraitorAliveObjective: 1
     RandomTraitorProgressObjective: 1
-    PrisonerBreakOutObjective: 1 # HARMONY
 
 #Thief groups
 - type: weightedRandom
