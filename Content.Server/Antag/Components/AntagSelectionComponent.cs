@@ -182,24 +182,6 @@ public partial struct AntagSelectionDefinition()
     /// </remarks>
     [DataField]
     public EntProtoId? SpawnerPrototype;
-
-    /// <summary>
-    /// The player must have one of the jobs in order to get the role.
-    /// </summary>
-    [DataField]
-    public List<ProtoId<JobPrototype>>? RequiredJobs; // HARMONY
-
-    /// <summary>
-    /// If the role should bypass any antagonist preference selection.
-    /// </summary>
-    [DataField]
-    public bool BypassSelectionPreference = false; // HARMONY
-
-    /// <summary>
-    /// Select a player even if the job they have cannot be an antagonist.
-    /// </summary>
-    [DataField]
-    public bool BypassCanBeAntag = false; // HARMONY
 }
 
 /// <summary>
