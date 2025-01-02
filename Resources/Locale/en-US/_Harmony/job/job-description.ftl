@@ -1,1 +1,1 @@
-job-description-prisoner = Mess around all while being in a little cell.
+job-description-prisoner = Role-play being a prisoner with the warden and security.
