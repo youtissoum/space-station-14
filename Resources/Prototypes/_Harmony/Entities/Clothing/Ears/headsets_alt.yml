@@ -1,0 +1,16 @@
+- type: entity
+  parent: [ClothingHeadsetAlt, BaseRestrictedContraband]
+  id: ClothingHeadsetAltWarden
+  name: warden's over-ear headset
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeySecurity
+      - EncryptionKeyCommand
+      - EncryptionKeyCommon
+  - type: Sprite
+    state: icon_warden_alt
+    sprite: Clothing/Ears/Headsets/security.rsi
+  - type: Clothing
+    sprite: Clothing/Ears/Headsets/security.rsi

@@ -22,6 +22,7 @@
         amount: 2
       - id: RemoteSignaller
         amount: 2
+      - id: ClothingHeadsetAltWarden # HARMONY: port warden headset
 
 - type: entity
   id: LockerWardenFilled
@@ -46,6 +47,7 @@
         amount: 2
       - id: RemoteSignaller
         amount: 2
+      - id: ClothingHeadsetAltWarden # HARMONY: port warden headset
 
 - type: entity
   id: LockerSecurityFilled
