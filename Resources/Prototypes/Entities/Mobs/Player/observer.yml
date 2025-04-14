@@ -53,6 +53,7 @@
     context: "ghost"
   - type: Examiner
     skipChecks: true
+  - type: Booer
   - type: Ghost
   - type: GhostHearing
   - type: ShowElectrocutionHUD

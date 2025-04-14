@@ -44,12 +44,6 @@ public sealed partial class GhostComponent : Component
     [ViewVariables(VVAccess.ReadWrite), DataField, AutoPausedField]
     public TimeSpan TimeOfDeath = TimeSpan.Zero;
 
-    [DataField("booRadius"), ViewVariables(VVAccess.ReadWrite)]
-    public float BooRadius = 3;
-
-    [DataField("booMaxTargets"), ViewVariables(VVAccess.ReadWrite)]
-    public int BooMaxTargets = 3;
-
     // TODO: instead of this funny stuff just give it access and update in system dirtying when needed
     [ViewVariables(VVAccess.ReadWrite)]
     public bool CanGhostInteract
@@ -102,5 +96,3 @@ public sealed partial class ToggleLightingActionEvent : InstantActionEvent { }
 public sealed partial class ToggleGhostHearingActionEvent : InstantActionEvent { }
 
 public sealed partial class ToggleGhostVisibilityToAllEvent : InstantActionEvent { }
-
-public sealed partial class BooActionEvent : InstantActionEvent { }
