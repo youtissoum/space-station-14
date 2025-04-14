@@ -1,5 +1,6 @@
 using Content.Server.Chat.Systems;
 using Content.Server.Ghost.Components;
+using Content.Shared.Ghost;
 using Content.Shared.Random.Helpers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -18,10 +19,10 @@ public sealed class SpookySpeakerSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<SpookySpeakerComponent, GhostBooEvent>(OnGhostBoo);
+        SubscribeLocalEvent<SpookySpeakerComponent, BooEvent>(OnGhostBoo);
     }
 
-    private void OnGhostBoo(Entity<SpookySpeakerComponent> entity, ref GhostBooEvent args)
+    private void OnGhostBoo(Entity<SpookySpeakerComponent> entity, ref BooEvent args)
     {
         // Only activate sometimes, so groups don't all trigger together
         if (!_random.Prob(entity.Comp.SpeakChance))
