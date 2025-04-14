@@ -64,7 +64,7 @@ public sealed class BooSystem : EntitySystem
     public bool DoBoo(EntityUid target)
     {
         var booEvent = new BooEvent();
-        RaiseLocalEvent(target, ref booEvent, true);
+        RaiseLocalEvent(target, ref booEvent);
 
         return booEvent.Handled;
     }

@@ -1,18 +1,24 @@
-using Content.Server.Light.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.DeviceLinking;
 using Content.Shared.Light.Components;
+using Content.Shared.Light.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
-namespace Content.Server.Light.Components
+namespace Content.Shared.Light.Components
 {
+    // TODO: Actually predict this
+    // I had to move this into shared to prevent mispredicts with ghost booing but didn't want to get soaped into
+    // entirely predicting powered lights yet.
+
     /// <summary>
     ///     Component that represents a wall light. It has a light bulb that can be replaced when broken.
     /// </summary>
-    [RegisterComponent, Access(typeof(PoweredLightSystem))]
+    [RegisterComponent, NetworkedComponent, Access(typeof(SharedPoweredLightSystem))]
+    [AutoGenerateComponentPause, AutoGenerateComponentState]
     public sealed partial class PoweredLightComponent : Component
     {
         [DataField("burnHandSound")]
@@ -47,8 +53,8 @@ namespace Content.Server.Light.Components
         public bool IsBlinking;
         [ViewVariables]
         public TimeSpan LastThunk;
-        [ViewVariables]
-        public TimeSpan? LastGhostBlink;
+        [ViewVariables, AutoPausedField, AutoNetworkedField]
+        public TimeSpan? NextGhostBlink;
 
         [DataField("onPort", customTypeSerializer: typeof(PrototypeIdSerializer<SinkPortPrototype>))]
         public string OnPort = "On";

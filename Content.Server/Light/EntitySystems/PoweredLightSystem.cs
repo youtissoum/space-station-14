@@ -19,6 +19,8 @@ using Robust.Shared.Timing;
 using Robust.Shared.Audio.Systems;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Damage.Components;
+using Content.Shared.Ghost;
+using Content.Shared.Light.EntitySystems;
 using Content.Shared.Power;
 
 namespace Content.Server.Light.EntitySystems
@@ -26,7 +28,7 @@ namespace Content.Server.Light.EntitySystems
     /// <summary>
     ///     System for the PoweredLightComponents
     /// </summary>
-    public sealed class PoweredLightSystem : EntitySystem
+    public sealed class PoweredLightSystem : SharedPoweredLightSystem
     {
         [Dependency] private readonly IGameTiming _gameTiming = default!;
         [Dependency] private readonly SharedAmbientSoundSystem _ambientSystem = default!;
@@ -51,7 +53,6 @@ namespace Content.Server.Light.EntitySystems
             SubscribeLocalEvent<PoweredLightComponent, InteractUsingEvent>(OnInteractUsing);
             SubscribeLocalEvent<PoweredLightComponent, InteractHandEvent>(OnInteractHand);
 
-            SubscribeLocalEvent<PoweredLightComponent, GhostBooEvent>(OnGhostBoo);
             SubscribeLocalEvent<PoweredLightComponent, DamageChangedEvent>(HandleLightDamaged);
 
             SubscribeLocalEvent<PoweredLightComponent, SignalReceivedEvent>(OnSignalReceived);
@@ -304,28 +305,13 @@ namespace Content.Server.Light.EntitySystems
             }
         }
 
-        private void OnGhostBoo(EntityUid uid, PoweredLightComponent light, GhostBooEvent args)
+        protected override void DoBoo(Entity<PoweredLightComponent> entity)
         {
-            if (light.IgnoreGhostsBoo)
-                return;
-
-            // check cooldown first to prevent abuse
-            var time = _gameTiming.CurTime;
-            if (light.LastGhostBlink != null)
+            ToggleBlinkingLight(entity, entity.Comp, true);
+            entity.Owner.SpawnTimer(entity.Comp.GhostBlinkingTime, () =>
             {
-                if (time <= light.LastGhostBlink + light.GhostBlinkingCooldown)
-                    return;
-            }
-
-            light.LastGhostBlink = time;
-
-            ToggleBlinkingLight(uid, light, true);
-            uid.SpawnTimer(light.GhostBlinkingTime, () =>
-            {
-                ToggleBlinkingLight(uid, light, false);
+                ToggleBlinkingLight(entity, entity.Comp, false);
             });
-
-            args.Handled = true;
         }
 
         private void OnPowerChanged(EntityUid uid, PoweredLightComponent component, ref PowerChangedEvent args)
