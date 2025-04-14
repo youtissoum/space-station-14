@@ -394,12 +394,6 @@ namespace Content.Server.Ghost
             }
         }
 
-        [Obsolete("Use BooSystem.DoBoo instead")]
-        public bool DoGhostBooEvent(EntityUid target)
-        {
-            return _booSystem.DoBoo(target);
-        }
-
         public EntityUid? SpawnGhost(Entity<MindComponent?> mind, EntityUid targetEntity,
             bool canReturn = false)
         {

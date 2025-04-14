@@ -18,6 +18,7 @@ using Content.Shared.Physics;
 using Content.Shared.DoAfter;
 using Content.Shared.Emag.Systems;
 using Content.Shared.FixedPoint;
+using Content.Shared.Ghost.EntitySystems;
 using Content.Shared.Humanoid;
 using Content.Shared.Light.Components;
 using Content.Shared.Maps;
@@ -39,9 +40,9 @@ public sealed partial class RevenantSystem
     [Dependency] private readonly EntityStorageSystem _entityStorage = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly MobThresholdSystem _mobThresholdSystem = default!;
-    [Dependency] private readonly GhostSystem _ghost = default!;
     [Dependency] private readonly TileSystem _tile = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private readonly BooSystem _booSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
@@ -70,7 +71,7 @@ public sealed partial class RevenantSystem
 
         if (HasComp<PoweredLightComponent>(target))
         {
-            args.Handled = _ghost.DoGhostBooEvent(target);
+            args.Handled = _booSystem.DoBoo(target);
             return;
         }
 
@@ -278,7 +279,7 @@ public sealed partial class RevenantSystem
 
             //flicker lights
             if (lights.HasComponent(ent))
-                _ghost.DoGhostBooEvent(ent);
+                _booSystem.DoBoo(ent);
         }
     }
 

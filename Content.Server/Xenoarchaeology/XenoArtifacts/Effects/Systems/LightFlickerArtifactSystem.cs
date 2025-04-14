@@ -1,6 +1,7 @@
 ﻿using Content.Server.Ghost;
 using Content.Server.Xenoarchaeology.XenoArtifacts.Effects.Components;
 using Content.Server.Xenoarchaeology.XenoArtifacts.Events;
+using Content.Shared.Ghost.EntitySystems;
 using Content.Shared.Light.Components;
 using Robust.Shared.Random;
 
@@ -13,7 +14,7 @@ public sealed class LightFlickerArtifactSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly GhostSystem _ghost = default!;
+    [Dependency] private readonly BooSystem _booSystem = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -32,7 +33,7 @@ public sealed class LightFlickerArtifactSystem : EntitySystem
             if (!_random.Prob(component.FlickerChance))
                 continue;
 
-            _ghost.DoGhostBooEvent(light);
+            _booSystem.DoBoo(light);
         }
     }
 }
