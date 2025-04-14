@@ -1,13 +1,14 @@
 using Content.Shared.Dataset;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
-namespace Content.Server.Ghost.Components;
+namespace Content.Shared.Ghost.Components;
 
 /// <summary>
 /// Causes this entity to react to ghost player using the "Boo!" action by speaking
 /// a randomly chosen message from a specified set.
 /// </summary>
-[RegisterComponent, AutoGenerateComponentPause]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentPause, AutoGenerateComponentState]
 public sealed partial class SpookySpeakerComponent : Component
 {
     /// <summary>
@@ -32,6 +33,6 @@ public sealed partial class SpookySpeakerComponent : Component
     /// <summary>
     /// Time when the cooldown will have elapsed and the entity can speak again.
     /// </summary>
-    [DataField, AutoPausedField]
+    [DataField, AutoPausedField, AutoNetworkedField]
     public TimeSpan NextSpeakTime;
 }
