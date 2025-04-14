@@ -3,12 +3,13 @@ using Content.Shared.Actions;
 using Content.Shared.Ghost.Components;
 using Content.Shared.Popups;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Ghost.EntitySystems;
 
 public sealed class BooSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private readonly EntityLookupSystem _entityLookupSystem = default!;
@@ -43,7 +44,8 @@ public sealed class BooSystem : EntitySystem
 
         var entities = _entityLookupSystem.GetEntitiesInRange(args.Performer, entity.Comp.Radius).ToList();
         // Shuffle the possible targets so we don't favor any particular entities
-        _random.Shuffle(entities);
+        var random = new System.Random((int)_gameTiming.CurTick.Value);
+        random.Shuffle(entities);
 
         var booCounter = 0;
         foreach (var target in entities)

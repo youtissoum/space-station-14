@@ -6,7 +6,6 @@ namespace Content.Shared.Ghost.EntitySystems;
 
 public abstract class SharedSpookySpeakerSystem : EntitySystem
 {
-    [Dependency] protected readonly IRobustRandom Random = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
@@ -18,8 +17,10 @@ public abstract class SharedSpookySpeakerSystem : EntitySystem
 
     private void OnGhostBoo(Entity<SpookySpeakerComponent> entity, ref BooEvent args)
     {
+        // Include the NetID in the random seed so all the machines don't have the same randomness
+        var random = new System.Random((int)_timing.CurTick.Value + MetaData(entity).NetEntity.Id);
         // Only activate sometimes, so groups don't all trigger together
-        if (!Random.Prob(entity.Comp.SpeakChance))
+        if (!random.Prob(entity.Comp.SpeakChance))
             return;
 
         var curTime = _timing.CurTime;
