@@ -23,6 +23,7 @@ public sealed class BooSystem : EntitySystem
     private void OnMapInit(Entity<BooerComponent> entity, ref MapInitEvent args)
     {
         _actionsSystem.AddAction(entity, ref entity.Comp.ActionEntity, entity.Comp.Action);
+        Dirty(entity);
     }
 
     private void OnComponentShutdown(Entity<BooerComponent> entity, ref ComponentShutdown args)
@@ -32,6 +33,7 @@ public sealed class BooSystem : EntitySystem
             return;
 
         _actionsSystem.RemoveAction(entity, entity.Comp.ActionEntity);
+        Dirty(entity);
     }
 
     private void OnBooAction(Entity<BooerComponent> entity, ref BooActionEvent args)

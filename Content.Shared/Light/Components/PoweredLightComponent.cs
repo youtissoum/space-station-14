@@ -1,6 +1,5 @@
 using Content.Shared.Damage;
 using Content.Shared.DeviceLinking;
-using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
