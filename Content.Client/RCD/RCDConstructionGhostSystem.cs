@@ -1,5 +1,4 @@
 using Content.Shared.Hands.Components;
-using Content.Shared.Input;
 using Content.Shared.Interaction;
 using Content.Shared.RCD;
 using Content.Shared.RCD.Components;
@@ -19,52 +18,6 @@ public sealed class RCDConstructionGhostSystem : EntitySystem
 
     private string _placementMode = typeof(AlignRCDConstruction).Name;
     private Direction _placementDirection = default;
-    private bool _useMirrorPrototype = false;
-    public event EventHandler? FlipConstructionPrototype;
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        // bind key
-        CommandBinds.Builder
-            .Bind(ContentKeyFunctions.EditorFlipObject,
-                new PointerInputCmdHandler(HandleFlip, outsidePrediction: true))
-            .Register<RCDConstructionGhostSystem>();
-    }
-
-    public override void Shutdown()
-    {
-        CommandBinds.Unregister<RCDConstructionGhostSystem>();
-        base.Shutdown();
-    }
-
-    private bool HandleFlip(in PointerInputCmdHandler.PointerInputCmdArgs args)
-    {
-        if (args.State == BoundKeyState.Down)
-        {
-            if (!_placementManager.IsActive || _placementManager.Eraser)
-                return false;
-
-            var placerEntity = _placementManager.CurrentPermission?.MobUid;
-
-            if(!TryComp<RCDComponent>(placerEntity, out var rcd) ||
-                string.IsNullOrEmpty(rcd.CachedPrototype.MirrorPrototype))
-                return false;
-
-            _useMirrorPrototype = !rcd.UseMirrorPrototype;
-
-            var useProto = _useMirrorPrototype ? rcd.CachedPrototype.MirrorPrototype : rcd.CachedPrototype.Prototype;
-            CreatePlacer(placerEntity.Value, rcd, useProto);
-
-            // tell the server
-
-            RaiseNetworkEvent(new RCDConstructionGhostFlipEvent(GetNetEntity(placerEntity.Value), _useMirrorPrototype));
-        }
-
-        return true;
-    }
-
 
     public override void Update(float frameTime)
     {
@@ -111,7 +64,7 @@ public sealed class RCDConstructionGhostSystem : EntitySystem
         // Create a new placer
         var newObjInfo = new PlacementInformation
         {
-            MobUid = uid,
+            MobUid = heldEntity.Value,
             PlacementOption = _placementMode,
             EntityType = prototype.Prototype,
             Range = (int) Math.Ceiling(SharedInteractionSystem.InteractionRange),
