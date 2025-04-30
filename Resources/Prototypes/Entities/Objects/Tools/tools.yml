@@ -344,6 +344,7 @@
     inHandsOnly: true
     key: enum.RcdUiKey.Key
 
+# Harmony change - RPD
 - type: entity
   id: RPD
   parent: RCD
@@ -374,9 +375,9 @@
     - Deconstruct
   - type: LimitedCharges
     maxCharges: 90
-    charges: 90
   - type: Sprite
     sprite: Objects/Tools/rpd.rsi
+# End harmony
 
 
 - type: entity
