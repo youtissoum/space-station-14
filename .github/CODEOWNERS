@@ -7,8 +7,8 @@
 /Content.*/                                         @KeldWolf @FluffMe @youtissoum
 
 # YML files
-/Resources/*.yml                                    @KeldWolf @FluffMe @youtissoum
-/Resources/**/*.yml                                 @KeldWolf @FluffMe @youtissoum
+/Resources/*.yml                                    @KeldWolf @FluffMe @youtissoum @Zap527
+/Resources/**/*.yml                                 @KeldWolf @FluffMe @youtissoum @Zap527
 
 # Sprites
 /Resources/Textures/                                @DieselMohawk
