@@ -92,6 +92,7 @@
     whitelist:
       components:
         - SecretStash
+        - WrappedParcel
   # Start Harmony Change for comedic PAI pelting
   - type: DamageOtherOnHit
     damage:
