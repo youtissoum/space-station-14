@@ -106,7 +106,7 @@
       fireCost: 100
   - type: BatterySelfRecharger
     autoRecharge: true
-    autoRechargeRate: 24
+    autoRechargeRate: 48
     autoRechargePause: true
-    autoRechargePauseTime: 15
+    autoRechargePauseTime: 10
   - type: Appearance
