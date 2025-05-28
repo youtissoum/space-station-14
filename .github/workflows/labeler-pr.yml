@@ -11,4 +11,14 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
+    # Harmony start
+    - name: Get Current Labels
+      id: get_current_labels
+      uses: snnaplab/get-labels-action@v1.0.1
+    # Harmony end
     - uses: actions/labeler@v5
+      # Harmony start
+      if: ${{ !contains(fromJSON(steps.get_current_labels.labels), "Maintenance") }}
+      with:
+        sync-labels: true
+      # Harmony end
