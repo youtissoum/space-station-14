@@ -1,4 +1,4 @@
-﻿name: "Labels: PR"
+name: "Labels: PR"
 
 on:
 - pull_request_target
@@ -15,13 +15,11 @@ jobs:
     - name: Get Current Labels
       id: get_current_labels
       uses: snnaplab/get-labels-action@v1.0.1
+      continue-on-error: true
     # Harmony end
     - uses: actions/labeler@v5
       # Harmony start
-      needs: get_current_labels
-      if: ${{ (env.LABELS == '') || (!contains(env.LABELS, 'Maintenance')) }}
-        env.LABELS == '' ||
-        (! contains(env.LABELS, 'Maintenance'))
+      if: ${{ (env.LABELS == '') || (! contains(env.LABELS, 'Maintenance')) }}
       with:
         sync-labels: true
       # Harmony end
