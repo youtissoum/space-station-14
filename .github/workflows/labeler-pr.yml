@@ -18,7 +18,7 @@ jobs:
     # Harmony end
     - uses: actions/labeler@v5
       # Harmony start
-      if: ${{ !contains(fromJSON(steps.get_current_labels.labels), "Maintenance") }}
+      # if: ${{ !contains(fromJSON(steps.get_current_labels.labels), "Maintenance") }}
       with:
         sync-labels: true
       # Harmony end
