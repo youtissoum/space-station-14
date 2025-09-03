@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "SS14 Harmony"
+SPDX-PackageSupplier = "TODO"
+SPDX-PackageDownloadLocation = "https://github.com/ss14-harmony/ss14-harmony"
+
+[[annotations]]
+path = ["Resources/Audio/**", "Resources/Textures/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "MIT"
