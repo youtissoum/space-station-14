@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2024 Kelderan <66748890+KeldWolf@users.noreply.github.com>
 # SPDX-FileCopyrightText: 2025 jajsha <corbinbinouche7@gmail.com>
 # SPDX-FileCopyrightText: 2025 Pieter-Jan Briers <pieterjan.briers+git@gmail.com>
+# SPDX-FileCopyrightText: 2025 TestBot <51883137+youtissoum@users.noreply.github.com>
 # SPDX-FileCopyrightText: 2025 youtissoum <51883137+youtissoum@users.noreply.github.com>
 #
 # SPDX-License-Identifier: MIT
