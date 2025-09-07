@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2025 youtissoum <51883137+youtissoum@users.noreply.github.com>
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 # A dictionary of file types with their comment character associated
 FILE_TYPES: dict[str, str] = {
@@ -27,7 +27,12 @@ FORK_NAMESPACES: dict[str, str] = {
     "_Umbra":         "MIT",
 }
 
-import argparse
+SPDX_START = "SPDX"
+SPDX_FILE_COPYRIGHT_TEXT = f"{SPDX_START}-FileCopyrightText"
+SPDX_LICENSE_IDENTIFIER = f"{SPDX_START}-License-Identifier"
+
+import argparse, os
+from dataclasses import dataclass
 
 parser = argparse.ArgumentParser()
 parser.add_argument("files", nargs="+", help="the list of files that need to be updated")
@@ -35,4 +40,147 @@ args = parser.parse_args()
 
 files: list[str] = args.files
 
-print(files)
+@dataclass
+class FileSpdxData:
+    copyrights: set[str]
+    license_identifier: str|None
+    extra_info: list[str]
+
+def get_file_data(lines: list[str], comment_char: str) -> FileSpdxData:
+    if len(lines) < 1:
+        return FileSpdxData([], None, [])
+
+    ignoring = False
+    copyrights: set[str] = set()
+    license_identifier: str|None = None
+    extra_info: list[str] = []
+
+    for line in lines:
+        if line == "":
+            break
+
+        stripped_line = line.lstrip().lstrip(comment_char).lstrip()
+
+        if stripped_line == "REUSE-IgnoreEnd":
+            ignoring = False
+            continue
+
+        if stripped_line == "REUSE-IgnoreStart":
+            ignoring = True
+            continue
+
+        if ignoring:
+            continue
+
+        if not stripped_line.startswith(SPDX_START):
+            continue
+
+        if stripped_line.startswith(f"{SPDX_FILE_COPYRIGHT_TEXT}: "):
+            copyrights.add(stripped_line.lstrip(f"{SPDX_FILE_COPYRIGHT_TEXT}: "))
+            continue
+
+        if stripped_line.startswith(f"{SPDX_LICENSE_IDENTIFIER}: "):
+            identifier = stripped_line.lstrip(f"{SPDX_LICENSE_IDENTIFIER}: ")
+
+            if license_identifier != None:
+                print(f"Found duplicate license identifiers, overriding {license_identifier} with {identifier}")
+
+            license_identifier = identifier
+            continue
+
+        extra_info.append(stripped_line)
+
+    return FileSpdxData(copyrights, license_identifier, extra_info)
+
+def clear_spdx_data(lines: list[str], comment_char: str):
+    if len(lines) < 1:
+        return FileSpdxData([], None, [])
+
+    to_clear: list[int] = []
+    last_was_spdx = False
+    spdx_started = False
+    ignoring = False
+
+    for i, line in enumerate(lines):
+        if line == "":
+            # The things I do to support bad formatting
+            if last_was_spdx:
+                to_clear.append(i)
+            break
+
+        last_was_spdx = False
+
+        stripped_line = line.lstrip().lstrip(comment_char).lstrip()
+
+        if stripped_line == "REUSE-IgnoreEnd":
+            ignoring = False
+            continue
+
+        if stripped_line == "REUSE-IgnoreStart":
+            ignoring = True
+            continue
+
+        if ignoring:
+            continue
+
+        if stripped_line == "" and spdx_started:
+            to_clear.append(i)
+            continue
+
+        if stripped_line.startswith(SPDX_START):
+            to_clear.append(i)
+            spdx_started = True
+            last_was_spdx = True
+            continue
+
+    for line in reversed(to_clear):
+        lines.pop(line)
+
+def get_copyright_text(existing_copyrights: list[str], file_name: str) -> list[str]:
+    new_copyrights: set[list[str]] = set()
+
+    for owner in existing_copyrights:
+
+
+def update_file(file_name: str):
+    print(f"Updating file {file_name}")
+
+    try:
+        with open(file_name, 'r') as f:
+            data = f.read()
+    except FileNotFoundError:
+        print(f"Failed to find file {file_name}, skipping...")
+        return
+
+    lines = data.splitlines()
+    file_type = os.path.splitext(file_name)[1]
+
+    if file_type not in FILE_TYPES:
+        print(f"Unsupported file type passed in: {file_type}, skipping...")
+        return
+
+    if len(lines) < 1:
+        print(f"{file_name} is empty, skipping...")
+        return
+
+    shebang: str|None = None
+    if lines[0].startswith("#!"):
+        shebang = lines[0]
+
+    comment_char = FILE_TYPES[file_type]
+
+    file_data = get_file_data(lines, comment_char)
+
+    clear_spdx_data(lines, comment_char)
+
+    new_data: list[str] = []
+
+    if shebang != None:
+        new_data.append(shebang)
+
+    new_data += file_data.extra_info
+
+
+
+for file in files:
+    update_file(file)
