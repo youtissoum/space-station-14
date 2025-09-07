@@ -13,19 +13,19 @@ FILE_TYPES: dict[str, str] = {
 # A dictionary associating the folder name of a namespace to their SPDX license identifier.
 # Sorted alphabetically because it looks nice
 FORK_NAMESPACES: dict[str, str] = {
-    "":               "MIT", # upstream
-    "_ADT":           "TODO", # I don't even know which server that is ??
-    "_CD":            "MIT",
-    "_DV":            "AGPL-3.0-or-later",
-    "_EE":            "AGPL-3.0-or-later",
-    "_EstacaoPirata": "AGPL-3.0-or-later",
-    "_Goobstation":   "AGPL-3.0-or-later",
-    "_Harmony":       "AGPL-3.0-or-later",
-    "_Impstation":    "AGPL-3.0-or-later",
-    "_LateStation":   "AGPL-3.0-or-later",
-    "_NF":            "AGPL-3.0-or-later",
-    "_RMC14":         "MIT",
-    "_Umbra":         "MIT",
+    "":               "MIT",               # https://github.com/space-wizards/space-station-14
+    "_ADT":           "AGPL-3.0-or-later", # https://github.com/AdventureTimeSS14/space_station_ADT
+    "_CD":            "MIT",               # https://github.com/cosmatic-drift-14/cosmatic-drift
+    "_DV":            "AGPL-3.0-or-later", # https://github.com/DeltaV-Station/Delta-v
+    "_EE":            "AGPL-3.0-or-later", # https://github.com/Simple-Station/Einstein-Engines
+    "_EstacaoPirata": "AGPL-3.0-or-later", # https://github.com/estacao-pirata/estacao-pirata
+    "_Goobstation":   "AGPL-3.0-or-later", # https://github.com/Goob-Station/Goob-Station
+    "_Harmony":       "AGPL-3.0-or-later", # https://github.com/ss14-harmony/ss14-harmony
+    "_Impstation":    "AGPL-3.0-or-later", # https://github.com/impstation/imp-station-14
+    "_LateStation":   "AGPL-3.0-or-later", # https://github.com/LateStation14/Late-station-14
+    "_NF":            "AGPL-3.0-or-later", # https://github.com/new-frontiers-14/frontier-station-14
+    "_RMC14":         "MIT",               # https://github.com/RMC-14/RMC-14
+    "_Umbra":         "MIT",               # https://github.com/Sector-Umbra/Sector-Umbra
 }
 
 # A list of author names that will never be added to the copyright text
@@ -307,6 +307,10 @@ def update_file(file_name: str):
             if folder in FORK_NAMESPACES:
                 license_identifier = FORK_NAMESPACES[folder]
                 break
+
+            if folder.startswith('_'):
+                print(f"Found unknown fork namespace folder: {folder}, aborting.")
+                exit(1)
 
         # If it's still none, assume it's an upstream file
         if license_identifier == None:
