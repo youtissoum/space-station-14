@@ -6,11 +6,13 @@
 
 name: Update REUSE headers
 
-on: pull_request_target
-
-permissions:
-  contents: read
-  pull-requests: write
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
 
 jobs:
   update_headers:
@@ -22,16 +24,17 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.head_ref }}
           fetch-depth: 0
+          token: ${{ secrets.BOT_TOKEN }}
 
-      - name: Setup Submodule
-        run: git submodule update --init
-
-      - name: Pull engine updates
-        uses: space-wizards/submodule-dependency@v0.1.5
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
 
       - name: Get changed files
         id: changed-files
         env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
@@ -69,5 +72,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Automatically update REUSE headers"
+          commit_user_name: ${{ vars.BOT_USER }}
+          commit_user_email: ${{ vars.BOT_EMAIL }}
+          commit_author: ${{ VARS.BOT_USER }} <${{ vars.BOT_EMAIL }}>
           skip_dirty_check: false
           skip_fetch: true
