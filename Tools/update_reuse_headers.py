@@ -276,6 +276,9 @@ def update_file(file_name: str):
         shebang = lines[0]
         lines.pop(0)
 
+    while lines[0] == "":
+        lines.pop(0)
+
     comment_char = FILE_TYPES[file_type]
 
     file_data = get_file_data(lines, comment_char)
