@@ -1,0 +1,19 @@
+name: Update REUSE headers
+
+on: pull_request
+
+jobs:
+  update_headers:
+    name: Update REUSE headers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 2
+      - name: Setup Submodule
+        run: git submodule update --init
+      - name: Pull engine updates
+        uses: space-wizards/submodule-dependency@v0.1.5
+      - name: Get changed files
+        id: changed-files
+        run: git diff --name-only HEAD^1 HEAD
