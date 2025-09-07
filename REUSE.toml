@@ -1,6 +1,6 @@
 version = 1
 SPDX-PackageName = "SS14 Harmony"
-SPDX-PackageSupplier = "TODO"
+SPDX-PackageSupplier = "Kelderan <66748890+KeldWolf@users.noreply.github.com>"
 SPDX-PackageDownloadLocation = "https://github.com/ss14-harmony/ss14-harmony"
 
 [[annotations]]
