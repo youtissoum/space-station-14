@@ -8,3 +8,9 @@ path = ["Resources/Audio/**", "Resources/Textures/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "None"
 SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["*", "**.json"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "MIT"
