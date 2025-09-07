@@ -274,6 +274,7 @@ def update_file(file_name: str):
     shebang: str|None = None
     if lines[0].startswith("#!"):
         shebang = lines[0]
+        lines.pop(0)
 
     comment_char = FILE_TYPES[file_type]
 
@@ -293,7 +294,26 @@ def update_file(file_name: str):
     for info in copyright_info:
         new_data.append(f"{comment_char} {SPDX_FILE_COPYRIGHT_TEXT}: {info.to_text()}")
 
-    print(new_data)
+    new_data += comment_char
+
+    license_identifier = file_data.license_identifier
+    license_identifier = None
+    if license_identifier == None:
+        for folder in reversed(file_name.replace('\\', '/').split('/')):
+            if folder in FORK_NAMESPACES:
+                license_identifier = FORK_NAMESPACES[folder]
+                break
+
+        # If it's still none, assume it's an upstream file
+        if license_identifier == None:
+            license_identifier = FORK_NAMESPACES[""]
+
+    new_data.append(f"{comment_char} {SPDX_LICENSE_IDENTIFIER}: {license_identifier}")
+
+    with open(file_name, 'w') as f:
+        f.write('\n'.join(new_data))
+        f.write('\n\n')
+        f.write('\n'.join(lines))
 
 for file in files:
     update_file(file)
