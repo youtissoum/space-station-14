@@ -298,7 +298,7 @@ def update_file(file_name: str):
     for info in copyright_info:
         new_data.append(f"{comment_char} {SPDX_FILE_COPYRIGHT_TEXT}: {info.to_text()}")
 
-    new_data += comment_char
+    new_data.append(comment_char)
 
     license_identifier = file_data.license_identifier
     license_identifier = None
