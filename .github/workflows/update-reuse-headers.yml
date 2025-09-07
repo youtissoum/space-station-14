@@ -10,10 +10,50 @@ jobs:
       - uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 2
+
       - name: Setup Submodule
         run: git submodule update --init
+
       - name: Pull engine updates
         uses: space-wizards/submodule-dependency@v0.1.5
+
       - name: Get changed files
         id: changed-files
-        run: git diff --name-only HEAD^1 HEAD
+        env:
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -e # Exit script on first error
+
+          echo "Fetching files for PR #${PR_NUMBER} in repo ${GH_REPO}"
+
+          PR_FILES_JSON=$(curl -s -f \
+            "https://api.github.com/repos/${GH_REPO}/pulls/${PR_NUMBER}/files")
+
+          if [ $? -ne 0 ]; then
+            echo "Error fetching PR files from GitHub API."
+            exit 1
+          fi
+
+          if ! echo "$PR_FILES_JSON" | jq -e . > /dev/null; then
+             echo "Warning: Received empty or invalid JSON from GitHub API for PR files."
+             PR_FILES="" # Set PR_FILES to empty to avoid errors below
+          else
+             PR_FILES=$(echo "$PR_FILES_JSON" | jq -r '.[] | select(.filename != null) | "\(.status) \(.filename)"')
+          fi
+
+          echo "Files: $PR_FILES"
+
+          echo "PR_FILES_LIST<<EOF" >> $GITHUB_ENV
+          echo "$PR_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Generate updated headers
+        run: Tools/update-reuse-headers.yml ${{ env.PR_FILES_LIST }}
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automatically update REUSE headers"
+          skip_dirty_check: false
+          skip_fetch: true
