@@ -172,8 +172,10 @@ class CopyrightInfo:
         return CopyrightInfo(year, name[:-1], email)
 
     def try_add_into(self, copyrights: set[Self]):
-        for author in copyrights:
-            if athor.name != self.name
+        to_replace: int|None = None
+
+        for i, author in enumerate(copyrights):
+
 
 def get_copyright_text(existing_copyrights: list[str], file_name: str) -> list[str]:
     new_copyrights: set[CopyrightInfo] = set()
