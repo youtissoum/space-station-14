@@ -1,6 +1,16 @@
+# SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
+# SPDX-FileCopyrightText: 2025 Aidenkrz <28298836+Aidenkrz@users.noreply.github.com>
+# SPDX-FileCopyrightText: 2025 youtissoum <51883137+youtissoum@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name: Update REUSE headers
 
-on: pull_request
+on: pull_request_target
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   update_headers:
@@ -9,7 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
         with:
-          fetch-depth: 2
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
       - name: Setup Submodule
         run: git submodule update --init
@@ -39,7 +51,7 @@ jobs:
              echo "Warning: Received empty or invalid JSON from GitHub API for PR files."
              PR_FILES="" # Set PR_FILES to empty to avoid errors below
           else
-             PR_FILES=$(echo "$PR_FILES_JSON" | jq -r '.[] | select(.filename != null) | "\(.status) \(.filename)"')
+             PR_FILES=$(echo "$PR_FILES_JSON" | jq -r '.[] | select(.filename != null) | "\(.filename)"')
           fi
 
           echo "Files: $PR_FILES"
@@ -49,7 +61,9 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Generate updated headers
-        run: Tools/update-reuse-headers.yml ${{ env.PR_FILES_LIST }}
+        run: |
+          Tools/update_reuse_headers.py $(echo "${{ env.PR_FILES_LIST }}" | tr '\n' ' ')
+        working-directory: ${{ github.workspace }}
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
