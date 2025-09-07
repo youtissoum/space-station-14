@@ -50,6 +50,7 @@ jobs:
 
       - name: Generate updated headers
         run: Tools/update-reuse-headers.yml ${{ env.PR_FILES_LIST }}
+        working-directory: ${{ github.workspace }}
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
