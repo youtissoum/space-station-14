@@ -322,6 +322,7 @@ def update_file(file_name: str):
         f.write('\n'.join(new_data))
         f.write('\n\n')
         f.write('\n'.join(lines))
+        f.write('\n')
 
 for file in files:
     update_file(file)
