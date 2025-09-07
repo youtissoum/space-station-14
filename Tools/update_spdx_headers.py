@@ -27,12 +27,17 @@ FORK_NAMESPACES: dict[str, str] = {
     "_Umbra":         "MIT",
 }
 
+# REUSE-IgnoreStart
 SPDX_START = "SPDX"
 SPDX_FILE_COPYRIGHT_TEXT = f"{SPDX_START}-FileCopyrightText"
 SPDX_LICENSE_IDENTIFIER = f"{SPDX_START}-License-Identifier"
+REUSE_IGNORE_START = "REUSE-IgnoreStart"
+REUSE_IGNORE_END = "REUSE-IgnoreEnd"
+# REUSE-IgnoreEnd
 
-import argparse, os
+import argparse, os, subprocess
 from dataclasses import dataclass
+from typing import Self
 
 parser = argparse.ArgumentParser()
 parser.add_argument("files", nargs="+", help="the list of files that need to be updated")
@@ -61,11 +66,11 @@ def get_file_data(lines: list[str], comment_char: str) -> FileSpdxData:
 
         stripped_line = line.lstrip().lstrip(comment_char).lstrip()
 
-        if stripped_line == "REUSE-IgnoreEnd":
+        if stripped_line == REUSE_IGNORE_END:
             ignoring = False
             continue
 
-        if stripped_line == "REUSE-IgnoreStart":
+        if stripped_line == REUSE_IGNORE_START:
             ignoring = True
             continue
 
@@ -112,11 +117,11 @@ def clear_spdx_data(lines: list[str], comment_char: str):
 
         stripped_line = line.lstrip().lstrip(comment_char).lstrip()
 
-        if stripped_line == "REUSE-IgnoreEnd":
+        if stripped_line == REUSE_IGNORE_END:
             ignoring = False
             continue
 
-        if stripped_line == "REUSE-IgnoreStart":
+        if stripped_line == REUSE_IGNORE_START:
             ignoring = True
             continue
 
@@ -136,11 +141,52 @@ def clear_spdx_data(lines: list[str], comment_char: str):
     for line in reversed(to_clear):
         lines.pop(line)
 
+@dataclass
+class CopyrightInfo:
+    year: int|None
+    name: str
+    email: str|None
+
+    # assumes the text actually follows the format :godo:
+    def from_text(text: str) -> Self|None:
+        parts: list[str] = text.split(' ')
+
+        if len(parts) == 0:
+            return None
+
+        year: int|None = None
+        name: str = ""
+        email: str|None = None
+
+        if parts[0].isnumeric():
+            year = parts[0]
+            parts.pop(0)
+
+        for part in parts:
+            if part.startswith('<'):
+                email = part.lstrip('<').rstrip('>')
+                break
+
+            name += part + " "
+
+        return CopyrightInfo(year, name[:-1], email)
+
+    def try_add_into(self, copyrights: set[Self]):
+        for author in copyrights:
+            if athor.name != self.name
+
 def get_copyright_text(existing_copyrights: list[str], file_name: str) -> list[str]:
-    new_copyrights: set[list[str]] = set()
+    new_copyrights: set[CopyrightInfo] = set()
 
-    for owner in existing_copyrights:
+    log_process = subprocess.run(["git", "log", '--pretty=format:%as %aN <%aE>', file_name], capture_output=True)
 
+    if log_process.returncode == 0:
+        for line_bytes in log_process.stdout.splitlines():
+            # This must break at least one law
+            parts: list[str] = line_bytes.decode(encoding='utf-8').split(' ')
+            parts[0] = parts[0].split('-')[0]
+
+            CopyrightInfo.from_text(' '.join(parts)).try_add_into(new_copyrights)
 
 def update_file(file_name: str):
     print(f"Updating file {file_name}")
@@ -180,7 +226,7 @@ def update_file(file_name: str):
 
     new_data += file_data.extra_info
 
-
+    get_copyright_text(file_data.copyrights, file_name)
 
 for file in files:
     update_file(file)
