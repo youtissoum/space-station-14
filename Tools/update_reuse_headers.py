@@ -27,6 +27,10 @@ FORK_NAMESPACES: dict[str, str] = {
     "_Umbra":         "MIT",
 }
 
+# A list of author names that will never be added to the copyright text
+# Use only if an author cannot copyright (is a bot) or if someone has changed names.
+IGNORED_AUTHORS: set[str] = []
+
 # REUSE-IgnoreStart
 SPDX_START = "SPDX"
 SPDX_FILE_COPYRIGHT_TEXT = f"{SPDX_START}-FileCopyrightText"
@@ -35,7 +39,7 @@ REUSE_IGNORE_START = "REUSE-IgnoreStart"
 REUSE_IGNORE_END = "REUSE-IgnoreEnd"
 # REUSE-IgnoreEnd
 
-import argparse, os, subprocess
+import argparse, os, subprocess, sys
 from dataclasses import dataclass
 from typing import Self
 
@@ -81,11 +85,11 @@ def get_file_data(lines: list[str], comment_char: str) -> FileSpdxData:
             continue
 
         if stripped_line.startswith(f"{SPDX_FILE_COPYRIGHT_TEXT}: "):
-            copyrights.add(stripped_line.lstrip(f"{SPDX_FILE_COPYRIGHT_TEXT}: "))
+            copyrights.add(stripped_line[len(f"{SPDX_FILE_COPYRIGHT_TEXT}: "):])
             continue
 
         if stripped_line.startswith(f"{SPDX_LICENSE_IDENTIFIER}: "):
-            identifier = stripped_line.lstrip(f"{SPDX_LICENSE_IDENTIFIER}: ")
+            identifier = stripped_line[len(f"{SPDX_LICENSE_IDENTIFIER}: "):]
 
             if license_identifier != None:
                 print(f"Found duplicate license identifiers, overriding {license_identifier} with {identifier}")
@@ -159,7 +163,7 @@ class CopyrightInfo:
         email: str|None = None
 
         if parts[0].isnumeric():
-            year = parts[0]
+            year = int(parts[0])
             parts.pop(0)
 
         for part in parts:
@@ -167,18 +171,63 @@ class CopyrightInfo:
                 email = part.lstrip('<').rstrip('>')
                 break
 
-            name += part + " "
+            name += f"{part} "
 
         return CopyrightInfo(year, name[:-1], email)
 
-    def try_add_into(self, copyrights: set[Self]):
+    def to_text(self) -> str:
+        output = ""
+
+        if self.year != None:
+            output += str(self.year) + " "
+
+        output += self.name
+
+        if self.email != None:
+            output += f" <{self.email}>"
+
+        return output
+
+    def try_add_into(self, copyrights: list[Self]):
+        if self.name in IGNORED_AUTHORS:
+            return
+
         to_replace: int|None = None
+        do_replace = False
 
         for i, author in enumerate(copyrights):
+            if author.name != self.name:
+                continue
+            to_replace = i
 
+            if (author.email == None) and (self.email != None):
+                do_replace = True
+                break
 
-def get_copyright_text(existing_copyrights: list[str], file_name: str) -> list[str]:
-    new_copyrights: set[CopyrightInfo] = set()
+            if (author.year == None) and (self.year != None):
+                if (self.email == None) and (author.email != None):
+                    self.email = author.email
+                do_replace = True
+                break
+
+            if (author.year != None) and (self.year != None):
+                if author.year < self.year:
+                    if (self.email == None) and (author.email != None):
+                        self.email = author.email
+                    do_replace = True
+                    break
+
+            break
+
+        if to_replace == None:
+            copyrights.append(self)
+        else:
+            if do_replace == True:
+                copyrights.pop(to_replace)
+                copyrights.append(self)
+
+def get_copyright_text(existing_copyrights: list[str], file_name: str) -> list[CopyrightInfo]:
+    new_copyrights: list[CopyrightInfo] = []
 
     log_process = subprocess.run(["git", "log", '--pretty=format:%as %aN <%aE>', file_name], capture_output=True)
 
@@ -189,6 +238,17 @@ def get_copyright_text(existing_copyrights: list[str], file_name: str) -> list[s
             parts[0] = parts[0].split('-')[0]
 
             CopyrightInfo.from_text(' '.join(parts)).try_add_into(new_copyrights)
+
+    for author in existing_copyrights:
+        copyright_info = CopyrightInfo.from_text(author)
+
+        if copyright_info != None:
+            copyright_info.try_add_into(new_copyrights)
+
+    new_copyrights.sort(key=lambda x: x.name.lower())
+    new_copyrights.sort(key=lambda x: (x.year or sys.maxsize))
+
+    return new_copyrights
 
 def update_file(file_name: str):
     print(f"Updating file {file_name}")
@@ -228,7 +288,12 @@ def update_file(file_name: str):
 
     new_data += file_data.extra_info
 
-    get_copyright_text(file_data.copyrights, file_name)
+    copyright_info = get_copyright_text(file_data.copyrights, file_name)
+
+    for info in copyright_info:
+        new_data.append(f"{comment_char} {SPDX_FILE_COPYRIGHT_TEXT}: {info.to_text()}")
+
+    print(new_data)
 
 for file in files:
     update_file(file)
