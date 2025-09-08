@@ -70,6 +70,11 @@ jobs:
           Tools/update_reuse_headers.py $(echo "${{ env.PR_FILES_LIST }}" | tr '\n' ' ')
         working-directory: ${{ github.workspace }}
 
+      - name: Sanity check the output
+        run: |
+          reuse lint-file $(echo "${{ env.PR_FILES_LIST }}" | tr '\n' ' ')
+        working-directory: ${{ github.workspace }}
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
