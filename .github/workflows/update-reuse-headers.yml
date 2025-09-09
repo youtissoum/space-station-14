@@ -61,7 +61,7 @@ jobs:
              echo "Warning: Received empty or invalid JSON from GitHub API for PR files."
              PR_FILES="" # Set PR_FILES to empty to avoid errors below
           else
-             PR_FILES=$(echo "$PR_FILES_JSON" | jq -r '.[] | select(.filename != null) | "\(.filename)"')
+             PR_FILES=$(echo "$PR_FILES_JSON" | jq -r '.[] | select(.filename != null) | select(.status != "removed") | "\(.filename)"')
           fi
 
           echo "Files: $PR_FILES"
