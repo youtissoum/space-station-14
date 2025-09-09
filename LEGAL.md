@@ -6,10 +6,12 @@ The Authors retain all copyright to their respective work here submitted.
 
 ## Code license
 
-Code contributed to this repository after commit `7d6a6073f9c1a3954d17b78d535d43659307cbe9` is licensed under the **GNU Affero General Public License version 3.0** license, unless otherwise stated. See [LICENSE-AGPLv3.txt](LICENSE-AGPLv3.txt).
+This repository is currently working towards compliance to the [REUSE specification version 3.3](https://reuse.software/spec-3.3/).
+
+Code contributed to this repository after commit `7d6a6073f9c1a3954d17b78d535d43659307cbe9` is licensed under the **GNU Affero General Public License version 3.0** license, unless otherwise stated. See [LICENSE-AGPLv3.txt](LICENSES/AGPL-3.0-or-later.txt).
 
 Code contributed to this repository before commit `7d6a6073f9c1a3954d17b78d535d43659307cbe9` is licensed under the **MIT** license.
-See [LICENSE-MIT.txt](LICENSE-MIT.txt).
+See [LICENSE-MIT.txt](LICENSES/MIT.txt).
 
 [7d6a6073f9c1a3954d17b78d535d43659307cbe9](https://github.com/ss14-harmony/ss14-harmony/commit/7d6a6073f9c1a3954d17b78d535d43659307cbe9) was pushed on October 30th, 2024 at 16:52 UTC
 
