@@ -26,7 +26,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-          token: ${{ secrets.BOT_TOKEN }}
+          # token: ${{ secrets.BOT_TOKEN }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -41,7 +41,7 @@ jobs:
       - name: Get changed files
         id: changed-files
         env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          # GH_TOKEN: ${{ secrets.BOT_TOKEN }}
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
@@ -80,12 +80,39 @@ jobs:
           reuse lint-file $(echo "${{ env.PR_FILES_LIST }}" | tr '\n' ' ')
         working-directory: ${{ github.workspace }}
 
+      - name: Check for added commits
+        id: changes-check
+        continue-on-error: true # don't mark the whole thing as failing when someone adds another commit
+        env:
+          # GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -e # Exit script on first error
+
+          echo "Fetching commits for PR #${PR_NUMBER} in repo ${GH_REPO}"
+
+          PR_COMMIT_JSON=$(curl -s -f \
+            "https://api.github.com/repos/${GH_REPO}/pulls/${PR_NUMBER}/commits?per_page=1")
+
+          if [ $? -ne 0 ]; then
+            echo "Error fetching commits from GitHub API."
+            exit 1
+          fi
+
+          PR_COMMIT_SHA=$(echo "$PR_COMMIT_JSON" | jq -r '.[0] | "\(.sha)"')
+
+          echo "Found commit sha $PR_COMMIT_SHA"
+
+          [[ $(git rev-parse HEAD) == $PR_COMMIT_SHA ]]
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
+        if: ${{ steps.changes-check.conclusion == 'failure' }}
         with:
           commit_message: "Automatically update REUSE headers"
-          commit_user_name: ${{ vars.BOT_USER }}
-          commit_user_email: ${{ vars.BOT_EMAIL }}
-          commit_author: ${{ VARS.BOT_USER }} <${{ vars.BOT_EMAIL }}>
+          # commit_user_name: ${{ vars.BOT_USER }}
+          # commit_user_email: ${{ vars.BOT_EMAIL }}
+          # commit_author: ${{ VARS.BOT_USER }} <${{ vars.BOT_EMAIL }}>
           skip_dirty_check: false
           skip_fetch: true
