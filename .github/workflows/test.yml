@@ -4,10 +4,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  builds:
+  build:
     runs-on: unbuntu-latest
 
     steps:
+    - uses: actions/checkout@v4.2.2
     - name: Test
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
