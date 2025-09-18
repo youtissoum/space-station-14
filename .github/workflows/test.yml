@@ -1,7 +1,7 @@
 name: Test
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   builds:
@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - name: Test
-      with:
+      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "$GITHUB_TOKEN"
